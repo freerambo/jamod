@@ -1,7 +1,7 @@
 /*
  * Copyright: Energy Research Institute @ NTU
  * jamod
- * com.rambo.jmod -> dsa.java
+ * com.rambo.jmod -> SerialSlaveTest.java
  * Created on 30 Jun 2017-2:51:45 pm
  */
 package com.rambo.jmod;

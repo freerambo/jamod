@@ -1,7 +1,7 @@
 /*
  * Copyright: Energy Research Institute @ NTU
  * jamod
- * com.rambo.jmod -> asd.java
+ * com.rambo.jmod -> SerialAITest.java
  * Created on 20 Jun 2017-4:55:05 pm
  */
 package com.rambo.jmod;
