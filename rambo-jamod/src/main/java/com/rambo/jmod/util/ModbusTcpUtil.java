@@ -21,10 +21,6 @@ import net.wimpi.modbus.msg.WriteSingleRegisterRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.procimg.SimpleRegister;
 
-enum FuctionCode {
-	F01, F02, F03, F04, F05, F06
-}
-
 public class ModbusTcpUtil {
 
 	/**
