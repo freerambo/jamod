@@ -57,13 +57,13 @@ public class ModbusTcpTest {
 	
 //	@Test
 	public void readCoils(){  // F01
-    	int i = ModbusTcpUtil.readDigitalOutput("172.21.76.119", 502, 0, 1);
+    	int i = ModbusTcpUtil.readCoil("172.21.76.119", 502, 0, 1);
     	System.out.println("readCoils "+ i);
 	}
 	
 //	@Test
 	public void readCoilInput(){ // F02
-    	int i = ModbusTcpUtil.readDigitalInput("172.21.76.119", 502, 22, 2);
+    	int i = ModbusTcpUtil.readDiscretesInput("172.21.76.119", 502, 22, 2);
     	System.out.println("readCoils "+ i);
 	}
 	
