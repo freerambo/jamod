@@ -39,7 +39,7 @@ public class ModbusTcpUtil {
 	 * @throws ModbusSlaveException
 	 * @throws ModbusException
 	 */
-	public static int readDigitalInput(String ip, int port, int ref, int slaveId) {
+	public static int readDiscretesInput(String ip, int port, int ref, int slaveId) {
 		int data = 0;
 
 		try {
@@ -130,7 +130,7 @@ public class ModbusTcpUtil {
 	 * @return
 	 * @author: Rambo Zhu     20 Jun 2017 3:27:01 pm
 	 */
-	public static int readDigitalOutput(String ip, int port, int ref,
+	public static int readCoil(String ip, int port, int ref,
 			int slaveId) {
 		int data = 0;
 		try {
@@ -215,10 +215,10 @@ public class ModbusTcpUtil {
 		int data = 0;
 		switch (fCode) {
         case "F01":
-        	data = ModbusTcpUtil.readDigitalOutput(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readDiscretesInput(ip, port, ref, slaveId);
             break;
         case "F02":
-        	data = ModbusTcpUtil.readDigitalInput(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readCoil(ip, port, ref, slaveId);
             break;
         case "F03":
         	data = ModbusTcpUtil.readRegister(ip, port, ref, slaveId);
