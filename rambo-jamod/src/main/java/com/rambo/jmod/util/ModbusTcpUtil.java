@@ -35,7 +35,7 @@ public class ModbusTcpUtil {
 	 * @throws ModbusSlaveException
 	 * @throws ModbusException
 	 */
-	public static int readDiscretesInput(String ip, int port, int ref, int slaveId) {
+	public static int readDiscretesInput(String ip, int port, int slaveId, int ref, int count) {
 		int data = 0;
 
 		try {
@@ -47,7 +47,7 @@ public class ModbusTcpUtil {
 			
 
 			// the 1st: the ref of register; 2nd is the number of register will be read
-			ReadInputDiscretesRequest req = new ReadInputDiscretesRequest(ref, 1);
+			ReadInputDiscretesRequest req = new ReadInputDiscretesRequest(ref, count);
 
 			// the Slave Id
 			req.setUnitID(slaveId);
@@ -86,15 +86,14 @@ public class ModbusTcpUtil {
 	 * @return
 	 * @author: Rambo Zhu    20 Jun 2017 3:50:06 pm
 	 */
-	public static int readInputRegister(String ip, int port, int ref,
-			int slaveId) {
+	public static int readInputRegister(String ip, int port, int slaveId, int ref, int count) {
 		int data = 0;
 
 		try {
 			TCPMasterConnection con = ModbusConnection.openTcpConnection(ip, port);
 			con.connect();
 			
-			ReadInputRegistersRequest req = new ReadInputRegistersRequest(ref, 1);
+			ReadInputRegistersRequest req = new ReadInputRegistersRequest(ref, count);
 			
 			req.setUnitID(slaveId);
 
@@ -126,14 +125,14 @@ public class ModbusTcpUtil {
 	 * @return
 	 * @author: Rambo Zhu     20 Jun 2017 3:27:01 pm
 	 */
-	public static int readCoil(String ip, int port, int ref,
-			int slaveId) {
+	public static int readCoil(String ip, int port, int slaveId, int ref, int count) {
 		int data = 0;
 		try {
+			
 			TCPMasterConnection con = ModbusConnection.openTcpConnection(ip, port);
 			con.connect();
 
-			ReadCoilsRequest req = new ReadCoilsRequest(ref, 1);
+			ReadCoilsRequest req = new ReadCoilsRequest(ref, count);
 
 			req.setUnitID(slaveId);
 
@@ -168,13 +167,12 @@ public class ModbusTcpUtil {
 	 * @return
 	 * @author: Rambo Zhu     20 Jun 2017 3:50:26 pm
 	 */
-	public static int readRegister(String ip, int port, int ref,
-			int slaveId) {
+	public static int readRegister(String ip, int port, int slaveId, int ref, int count) {
 		int data = 0;
 		try {
 			TCPMasterConnection con = ModbusConnection.openTcpConnection(ip, port);
 			con.connect();
-			ReadMultipleRegistersRequest req = new ReadMultipleRegistersRequest(ref, 1);
+			ReadMultipleRegistersRequest req = new ReadMultipleRegistersRequest(ref, count);
 			req.setUnitID(slaveId);
 
 			ModbusTCPTransaction trans = new ModbusTCPTransaction(con);
@@ -187,6 +185,12 @@ public class ModbusTcpUtil {
 			
 			data = res.getRegisterValue(0);
 
+			System.out.println(" - "+ res.getHexMessage() + " -- " + data + " -- " + res.getRegisterValue(1));
+			
+		    Float value = Float.intBitsToFloat((data<<16)+res.getRegisterValue(1));
+
+		    System.out.println(value);
+		    
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -207,25 +211,24 @@ public class ModbusTcpUtil {
 	 * @return
 	 * @author: Rambo Zhu     20 Jun 2017 4:14:44 pm
 	 */
-	public static int readData(String ip, int port, int ref, int slaveId, String fCode) {
+	public static int readData(String ip, int port, int slaveId, int ref,int count, String fCode) {
 		int data = 0;
 		switch (fCode) {
         case "F01":
-        	data = ModbusTcpUtil.readDiscretesInput(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readDiscretesInput(ip, port, slaveId, ref, count);
             break;
         case "F02":
-        	data = ModbusTcpUtil.readCoil(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readCoil(ip, port, slaveId, ref, count);
             break;
         case "F03":
-        	data = ModbusTcpUtil.readRegister(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readRegister(ip, port, slaveId, ref, count);
             break;
         case "F04":
-        	data = ModbusTcpUtil.readInputRegister(ip, port, ref, slaveId);
+        	data = ModbusTcpUtil.readInputRegister(ip, port, slaveId, ref, count);
             break;
         default:
             throw new IllegalArgumentException("Invalid function code for reading ");
     }
-		
 		return data;
 	}	
 	
@@ -275,7 +278,6 @@ public class ModbusTcpUtil {
 
 			ModbusTCPTransaction trans = new ModbusTCPTransaction(connection);
 
-//			UnityRegister register = new UnityRegister(value);
 			SimpleRegister register = new SimpleRegister(value);
 
 			
@@ -338,5 +340,19 @@ public class ModbusTcpUtil {
 			ex.printStackTrace();
 		}
 	}
-
+	
+	public static void main(String[] args){
+		
+		System.out.println(0x4028);
+		System.out.println(0x51D8);
+		System.out.println((0x4028<<16) +  0x51D8 );
+		System.out.println(0x402851D8);
+		
+		  Long dataAsLong = Long.parseLong("402851D8", 16);
+		  System.out.println(dataAsLong);
+	      Float value = Float.intBitsToFloat(dataAsLong.intValue());
+	       
+	      System.out.println(value);
+	}
+	
 }
