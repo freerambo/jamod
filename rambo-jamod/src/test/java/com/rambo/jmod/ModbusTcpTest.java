@@ -83,7 +83,7 @@ public class ModbusTcpTest {
 	public void writeRegister(){ //  
     	ModbusTcpUtil.writeRegister("172.21.76.119", 502, 3, 30, 30);
 	}
-	@Test
+//	@Test
 	public void readTest(){ //  
 //		int i = ModbusTcpUtil.readData("172.21.76.119", 502, 0, 1, "F01");
 //		System.out.println("F01 " + i);
@@ -98,6 +98,12 @@ public class ModbusTcpTest {
 //		01030002375B
 //		i = ModbusTcpUtil.readData("172.21.76.119", 502, 44, 4, "F04");
 //		System.out.println("F04 " + i);
+	}
+	
+	@Test
+	public void readWithRegisters(){ //  
+//		ModbusTcpUtil.readData("192.168.0.7", 23,  1, 0x0C03, 2, "F03");
+		ModbusTcpUtil.readData("192.168.0.7", 23,  1, 3059, 2, "F03");
 	}
 	
 //	@Test
